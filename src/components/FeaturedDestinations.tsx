@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from '../hooks/useLocation';
 
@@ -53,24 +53,52 @@ const destinations = [
   }
 ];
 
+const classOptions = [
+  'Economy',
+  'Premium Economy',
+  'Business',
+  'First',
+];
+
 const FeaturedDestinations = () => {
   const navigate = useNavigate();
   const { city, loading, error } = useLocation();
+  const [selectedDestination, setSelectedDestination] = useState<null | typeof destinations[0]>(null);
+  const [selectedClass, setSelectedClass] = useState('Economy');
+  const [showClassSelect, setShowClassSelect] = useState(false);
 
-  const handleDestinationClick = (destination: typeof destinations[0]) => {
+  const handleBookNowClick = (destination: typeof destinations[0]) => {
+    setSelectedDestination(destination);
+    setShowClassSelect(true);
+  };
+
+  const handleClassSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedClass(e.target.value);
+  };
+
+  const handleConfirm = () => {
+    if (!selectedDestination) return;
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const formattedDate = tomorrow.toISOString().split('T')[0];
-
     navigate('/search-results', {
       state: {
-        from: city || 'Mumbai', // Use detected city or fallback to Mumbai
-        to: destination.nearestAirport,
+        from: city || 'Mumbai',
+        to: selectedDestination.nearestAirport,
         departDate: formattedDate,
         passengers: '1',
-        class: 'Economy'
-      }
+        class: selectedClass,
+      },
     });
+    setShowClassSelect(false);
+    setSelectedDestination(null);
+    setSelectedClass('Economy');
+  };
+
+  const handleCancel = () => {
+    setShowClassSelect(false);
+    setSelectedDestination(null);
+    setSelectedClass('Economy');
   };
 
   return (
@@ -125,7 +153,7 @@ const FeaturedDestinations = () => {
                     </p>
                   </div>
                   <button
-                    onClick={() => handleDestinationClick(destination)}
+                    onClick={() => handleBookNowClick(destination)}
                     className="px-4 py-2 bg-[#212F3C] text-white rounded-md hover:bg-[#212F3C]/90 transition-colors"
                   >
                     Book Now
@@ -135,6 +163,40 @@ const FeaturedDestinations = () => {
             </div>
           ))}
         </div>
+
+        {/* Class selection modal/dropdown */}
+        {showClassSelect && selectedDestination && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+            <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-xs">
+              <h3 className="text-lg font-semibold mb-4 text-[#212F3C] text-center">
+                Select Class for {selectedDestination.name}
+              </h3>
+              <select
+                value={selectedClass}
+                onChange={handleClassSelect}
+                className="w-full mb-6 px-4 py-2 border border-[#717D7E]/20 rounded-md focus:outline-none focus:ring-2 focus:ring-[#212F3C]"
+              >
+                {classOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              <div className="flex justify-between gap-2">
+                <button
+                  onClick={handleCancel}
+                  className="flex-1 px-4 py-2 bg-[#717D7E]/20 text-[#212F3C] rounded-md hover:bg-[#717D7E]/40 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirm}
+                  className="flex-1 px-4 py-2 bg-[#212F3C] text-white rounded-md hover:bg-[#212F3C]/90 transition-colors"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

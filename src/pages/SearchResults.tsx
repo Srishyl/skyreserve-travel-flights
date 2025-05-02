@@ -13,13 +13,66 @@ interface SearchParams {
   class: string;
 }
 
+// Simple mapping of city/airport codes to lat/lng
+const cityCoords: Record<string, { lat: number; lng: number }> = {
+  'Mumbai': { lat: 19.0896, lng: 72.8656 },
+  'Delhi': { lat: 28.5562, lng: 77.1000 },
+  'Bangalore': { lat: 13.1986, lng: 77.7066 },
+  'Chennai': { lat: 12.9941, lng: 80.1709 },
+  'Kolkata': { lat: 22.6547, lng: 88.4467 },
+  'Goa': { lat: 15.3800, lng: 73.8317 },
+  'Kochi': { lat: 10.1510, lng: 76.4019 },
+  'Jaipur': { lat: 26.8242, lng: 75.8122 },
+  'Leh': { lat: 34.1357, lng: 77.5465 },
+  'Port Blair': { lat: 11.6410, lng: 92.7297 },
+  'Varanasi': { lat: 25.4524, lng: 82.8593 },
+};
+
+// Haversine formula to calculate distance in km
+function getDistanceKm(from: string, to: string): number {
+  const R = 6371; // Earth radius in km
+  const fromCoord = cityCoords[from] || cityCoords['Mumbai'];
+  const toCoord = cityCoords[to] || cityCoords['Delhi'];
+  const dLat = (toCoord.lat - fromCoord.lat) * Math.PI / 180;
+  const dLng = (toCoord.lng - fromCoord.lng) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(fromCoord.lat * Math.PI / 180) *
+      Math.cos(toCoord.lat * Math.PI / 180) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(R * c);
+}
+
+// Professional price calculation
+function calculatePrice(from: string, to: string, flightClass: string): number {
+  const distance = getDistanceKm(from, to);
+  const baseFare = 2000; // INR
+  const perKmRate = 6.5; // INR per km
+  let multiplier = 1;
+  switch (flightClass) {
+    case 'Premium Economy':
+      multiplier = 1.3;
+      break;
+    case 'Business':
+      multiplier = 2;
+      break;
+    case 'First':
+      multiplier = 3;
+      break;
+    default:
+      multiplier = 1;
+  }
+  return Math.round((baseFare + distance * perKmRate) * multiplier);
+}
+
 const SearchResults = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = location.state as SearchParams;
   const { user } = useAuth();
 
-  // Dummy flight data with Indian Rupee prices
+  // Dummy flight data with dynamic prices
   const flights = [
     {
       id: 1,
@@ -30,7 +83,7 @@ const SearchResults = () => {
       departureTime: '10:00 AM',
       arrivalTime: '12:00 PM',
       duration: '2h',
-      price: 4999,
+      price: calculatePrice(searchParams.from, searchParams.to, searchParams.class),
       stops: 0,
     },
     {
@@ -42,7 +95,7 @@ const SearchResults = () => {
       departureTime: '2:00 PM',
       arrivalTime: '4:30 PM',
       duration: '2h 30m',
-      price: 6499,
+      price: calculatePrice(searchParams.from, searchParams.to, searchParams.class) + 500, // Slightly higher for variety
       stops: 1,
     },
     {
@@ -54,7 +107,7 @@ const SearchResults = () => {
       departureTime: '7:00 AM',
       arrivalTime: '9:15 AM',
       duration: '2h 15m',
-      price: 5799,
+      price: calculatePrice(searchParams.from, searchParams.to, searchParams.class) - 300, // Slightly lower for variety
       stops: 0,
     },
     // Add more dummy flights as needed
@@ -165,14 +218,17 @@ const SearchResults = () => {
                       <p className="text-sm text-[#717D7E]">{flight.arrival}</p>
                     </div>
                   </div>
-                  <div className="mt-2">
+                  <div className="mt-2 flex items-center gap-4">
                     <span className="text-sm text-[#717D7E]">
                       {flight.stops === 0 ? 'Direct' : `${flight.stops} Stop`}
+                    </span>
+                    <span className="text-sm text-[#717D7E]">
+                      Distance: {getDistanceKm(flight.departure, flight.arrival).toLocaleString()} km
                     </span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-3xl font-bold text-[#212F3C]">
+                  <p className="text-2xl font-semibold text-[#212F3C]">
                     {formatPrice(flight.price)}
                   </p>
                   <button 
