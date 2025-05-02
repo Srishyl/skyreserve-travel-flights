@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0, 8)">
+    <!-- First location marker -->
+    <path d="M15 12C15 16.9706 11.9706 20 7 20C2.02944 20 -1 16.9706 -1 12C-1 7.02944 2.02944 4 7 4C11.9706 4 15 7.02944 15 12Z" fill="#717D7E"/>
+    <circle cx="7" cy="12" r="3" fill="white"/>
+    
+    <!-- Airplane -->
+    <g transform="translate(40, 0) rotate(0)">
+      <path d="M60 12L45 18L40 16L50 12L40 8L45 6L60 12Z" fill="#212F3C"/>
+    </g>
+    
+    <!-- Second location marker -->
+    <path d="M115 12C115 16.9706 111.971 20 107 20C102.029 20 99 16.9706 99 12C99 7.02944 102.029 4 107 4C111.971 4 115 7.02944 115 12Z" fill="#717D7E"/>
+    <circle cx="107" cy="12" r="3" fill="white"/>
+    
+    <!-- Dotted line -->
+    <line x1="20" y1="12" x2="95" y2="12" stroke="#717D7E" stroke-width="2" stroke-dasharray="4 4"/>
+  </g>
+</svg> 

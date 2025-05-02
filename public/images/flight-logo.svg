@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flight path curve -->
+  <path 
+    d="M4 20C8 16 16 14 28 16" 
+    stroke="#717D7E" 
+    stroke-width="1.5" 
+    stroke-dasharray="2 2"
+    fill="none"
+  />
+  
+  <!-- Modern airplane shape -->
+  <g transform="translate(12, 8) rotate(-15)">
+    <!-- Main body -->
+    <path 
+      d="M16 8L4 12L2 11L8 8L2 5L4 4L16 8Z" 
+      fill="#212F3C"
+    />
+    <!-- Wings -->
+    <path 
+      d="M6 8L2 12V9L6 7V8Z" 
+      fill="#212F3C"
+    />
+    <path 
+      d="M6 8L2 4V7L6 9V8Z" 
+      fill="#212F3C"
+    />
+    <!-- Tail -->
+    <path 
+      d="M3 11L1 12V10L3 9V11Z" 
+      fill="#212F3C"
+    />
+    <path 
+      d="M3 5L1 6V4L3 3V5Z" 
+      fill="#212F3C"
+    />
+  </g>
+</svg> 

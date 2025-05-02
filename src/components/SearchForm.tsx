@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,7 +122,7 @@ const SearchForm: React.FC = () => {
         </div>
       </div>
       
-      <Button className="w-full md:w-auto px-8 py-6 text-lg bg-accent hover:bg-accent/90 transition-colors">
+      <Button className="w-full md:w-auto px-8 py-6 text-lg bg-teal-500 hover:bg-teal-600 text-white transition-colors">
         <Search className="mr-2 h-4 w-4" /> Search Flights
       </Button>
     </div>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,28 +26,40 @@ const TravelTips: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 px-4 bg-gray-50">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Travel Tips & Guides</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+    <section className="py-24 px-4 bg-gradient-to-b from-[#717D7E]/5 to-white">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-6 text-[#212F3C] leading-tight">Travel Tips & Guides</h2>
+          <p className="text-[#717D7E] max-w-2xl mx-auto text-lg">
             Expert advice to enhance your travel experience and help you make the most of your journey.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {tips.map((tip) => (
-            <Card key={tip.id} className="border-0 shadow-md hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle>{tip.title}</CardTitle>
-                <CardDescription>{tip.readTime}</CardDescription>
+            <Card 
+              key={tip.id} 
+              className="border border-[#717D7E]/10 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+            >
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-2xl font-bold text-[#212F3C] group-hover:text-[#212F3C]/90 transition-colors">
+                  {tip.title}
+                </CardTitle>
+                <CardDescription className="text-[#717D7E] text-sm">
+                  {tip.readTime}
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p>{tip.description}</p>
+                <p className="text-[#717D7E] text-base leading-relaxed">
+                  {tip.description}
+                </p>
               </CardContent>
               <CardFooter>
-                <Button variant="ghost" className="p-0 hover:bg-transparent text-accent">
-                  Read More <ArrowUpRight className="ml-1 h-4 w-4" />
+                <Button 
+                  variant="ghost" 
+                  className="p-0 hover:bg-transparent text-[#212F3C] hover:text-[#717D7E] group-hover:translate-x-2 transition-all duration-300"
+                >
+                  Read More <ArrowUpRight className="ml-2 h-5 w-5" />
                 </Button>
               </CardFooter>
             </Card>

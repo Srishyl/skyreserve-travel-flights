@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Shield, Clock, CreditCard, HeartHandshake } from "lucide-react";
 
@@ -31,26 +30,30 @@ const WhyChooseUs: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 px-4">
-      <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Why Choose SkyReserve</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+    <section className="py-24 px-4 bg-gradient-to-b from-white to-[#717D7E]/5">
+      <div className="container mx-auto max-w-7xl">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold mb-6 text-[#212F3C] leading-tight">
+            Why Choose SkyReserve
+          </h2>
+          <p className="text-[#717D7E] max-w-2xl mx-auto text-lg">
             We're dedicated to making your flight booking experience seamless and worry-free.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
           {features.map((feature) => (
             <div 
               key={feature.id} 
-              className="bg-white p-6 rounded-lg shadow-md border border-gray-100 text-center hover:shadow-lg transition-all hover:-translate-y-1"
+              className="bg-white p-8 rounded-xl shadow-md border border-[#717D7E]/10 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
             >
-              <div className="mx-auto w-16 h-16 flex items-center justify-center bg-accent/10 rounded-full mb-4">
-                {feature.icon}
+              <div className="mx-auto w-20 h-20 flex items-center justify-center bg-[#717D7E]/5 rounded-full mb-6 group-hover:bg-[#212F3C]/5 transition-colors duration-300">
+                {React.cloneElement(feature.icon, {
+                  className: "h-10 w-10 text-[#212F3C] group-hover:text-[#212F3C]"
+                })}
               </div>
-              <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <h3 className="text-xl font-semibold mb-4 text-[#212F3C]">{feature.title}</h3>
+              <p className="text-[#717D7E] text-base leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
