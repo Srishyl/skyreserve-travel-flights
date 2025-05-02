@@ -123,6 +123,12 @@ const SearchResults = () => {
   };
 
   const handleSelectFlight = (flight: typeof flights[0]) => {
+    if (!user) {
+      navigate('/login', {
+        state: { from: '/search-results', flightToBook: flight, searchParams },
+      });
+      return;
+    }
     navigate('/booking-summary', {
       state: {
         flightDetails: flight,

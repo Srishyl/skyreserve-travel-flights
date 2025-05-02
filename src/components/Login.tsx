@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 
 export const Login = () => {
@@ -9,6 +9,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +21,17 @@ export const Login = () => {
       } else {
         await signIn(email, password);
       }
-      navigate('/');
+      // Redirect to booking-summary if booking info is present
+      if (location.state && location.state.flightToBook && location.state.searchParams) {
+        navigate('/booking-summary', {
+          state: {
+            flightDetails: location.state.flightToBook,
+            searchParams: location.state.searchParams,
+          },
+        });
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     }
@@ -29,7 +40,16 @@ export const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      navigate('/');
+      if (location.state && location.state.flightToBook && location.state.searchParams) {
+        navigate('/booking-summary', {
+          state: {
+            flightDetails: location.state.flightToBook,
+            searchParams: location.state.searchParams,
+          },
+        });
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     }
